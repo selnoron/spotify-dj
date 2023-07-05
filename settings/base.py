@@ -2,6 +2,8 @@
 import os
 import sys
 from pathlib import Path
+
+# Third party
 from decouple import config
 
 
@@ -9,6 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = config('SECRET_KEY', cast=str)
 DEBUG = config('DEBUG', cast=bool)
+
 ALLOWED_HOSTS = []
 
 DJANGO_APPS = [
@@ -19,12 +22,11 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles'
 ]
-
 PROJECT_APPS = [
+    'auths.apps.AuthsConfig',
     'main.apps.MainConfig',
-    'auths.apps.AuthsConfig'
+    'abstracts.apps.AbstractsConfig'
 ]
-
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
