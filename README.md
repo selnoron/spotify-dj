@@ -19,3 +19,6 @@ python3 manage.py createsuperuser
 ## Runserver
 
 python3 manage.py runserver
+
+# DEVELOPMENT 
+Rename env.txt > .env
