@@ -23,9 +23,9 @@ DJANGO_APPS = [
     'django.contrib.staticfiles'
 ]
 PROJECT_APPS = [
+    'abstracts.apps.AbstractsConfig',
     'auths.apps.AuthsConfig',
-    'main.apps.MainConfig',
-    'abstracts.apps.AbstractsConfig'
+    'main.apps.MainConfig'
 ]
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
@@ -74,5 +74,8 @@ TIME_ZONE = 'Asia/Almaty'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'

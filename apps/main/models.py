@@ -5,6 +5,9 @@ from django.db import models
 # First party
 from abstracts.models import AbsctractDateTime
 
+# Typing
+from typing import Any
+
 
 class Country(models.Model):
     title = models.CharField(
@@ -29,21 +32,11 @@ class Band(AbsctractDateTime):
         verbose_name='фоловеры',
         default=0
     )
-    country = models.OneToOneField(
+    country = models.ForeignKey(
         to=Country,
         on_delete=models.PROTECT,
         verbose_name='страна'
     )
-
-    class Meta:
-        ordering = ('id',)
-        verbose_name = 'группа'
-        verbose_name_plural = 'группы'
-
-    def __str__(self) -> str:
-        if not self.title:
-            return 'Без названия'
-        return f'Группа: {self.title}'
 
 
 class Artist(AbsctractDateTime):
@@ -140,4 +133,68 @@ class Album(models.Model):
         ordering = ('release_date',)
         verbose_name = 'альбом'
         verbose_name_plural = 'альбомы'
-        
+
+
+class Genre(models.Model):
+    """Genre model."""
+
+    title = models.CharField(
+        max_length=50,
+        verbose_name='жанр'
+    )
+    def __str__(self) -> str:
+        return self.title
+
+    class Meta:
+        verbose_name = 'жанр'
+        verbose_name_plural = 'жанры'
+        ordering = ('-id',)
+
+
+class Song(models.Model):
+    """Song model."""
+
+
+    title = models.CharField(
+        verbose_name='название песни',
+        max_length=50
+    )
+    album = models.ForeignKey(
+        to=Album,
+        verbose_name='альбом',
+        on_delete=models.CASCADE
+    )
+    audio_file = models.FileField(
+        verbose_name='аудио файл',
+        upload_to='songs/%Y/%m/%d/'
+    )
+    duration = models.PositiveSmallIntegerField(
+        verbose_name='длительность трека'
+    )
+    genre = models.ManyToManyField(
+        to=Genre,
+        verbose_name='жанр'
+    )
+    times_played = models.PositiveIntegerField(
+        verbose_name='количество прослушиваний',
+        null=True,
+        blank=True
+    )
+    
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        # TODO: потом сделать через PostSave
+        #
+        import mutagen
+        mfile: mutagen.File = mutagen.File(
+            self.audio_file
+        )
+        self.duration = mfile.info.length
+        super().save(*args, **kwargs)
+    def __str__(self) -> str:
+        return f'Song: {self.title}'
+
+    class Meta:
+        verbose_name = 'песня'
+        verbose_name_plural = 'песни'
+        ordering = ('id',)
