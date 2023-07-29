@@ -4,12 +4,45 @@
 
 <div class="albums-container container-fluid">
     <div class="row">
-        <div class="col-sm-12">
-            {% for artist in artists %}
-                <h3>{{ artist }}</h3>
+
+        {% if albums %}
+            {% for album in albums %}
+                <div class="col-sm-4 col-lg-2">
+                    <div class="thumbnail">
+                        <a href="{% url 'detail' album.id %}">
+                            {% if album.logo %}
+                                <img src="{{ album.logo.url }}" class="img-responsive" />
+                            {% else %}
+                                <img src="media/default_cover.png" class="img-responsive" />
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
             {% endfor %}
-        </div>
+        {% endif %}
+
     </div>
 </div>
+<div class="songs-container container-fluid">
+    <div class="row">
 
+        {% if songs %}
+            {% for song in songs %}
+                <div class="col-sm-4 col-lg-2">
+                    <div class="thumbnail" style="display: flex; flex-direction: row; justify-content: space-between;">
+                        <div class="img_div" style="display: flex; flex-direction: column; justify-content: center; width: 21%; ">
+                            <div class="img" style="align-self: center; width: 90%; height: 80%; background-color: grey; border-radius: 10px;"></div>
+                        </div>
+                        <div class="info_div" style="width: 79%; height: 100%;"> 
+                            <p><b style="font-size: 20px;">{{ song.title }}</b><span style="float: right;">{{ song.duration }}sec</span></p>
+                            <p>Album: {{ song.album.title }}</p>
+                        </div>
+                    </div>
+                </div> 
+                <div class="w-100"></div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+</div>
 {% endblock %}
