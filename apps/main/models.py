@@ -7,6 +7,7 @@ from django.db import models
 
 # First party
 from abstracts.models import AbsctractDateTime
+from abstracts.utils import normalize_time
 
 
 class Country(models.Model):
@@ -193,6 +194,12 @@ class Song(models.Model):
         null=True,
         blank=True
     )
+
+    @property
+    def normalized_duration(self) -> str:
+        return normalize_time(
+            self.duration
+        )
 
     def __str__(self) -> str:
         return f'Song: {self.title}'
