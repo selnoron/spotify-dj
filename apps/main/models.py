@@ -189,6 +189,10 @@ class Song(models.Model):
         to=Genre,
         verbose_name='жанр'
     )
+    # TODO: отправлять email при достижении
+    #       100 прослушиваний
+    #       1000 прослушиваний итд.
+    #
     times_played = models.PositiveIntegerField(
         verbose_name='количество прослушиваний',
         null=True,
@@ -205,7 +209,6 @@ class Song(models.Model):
         return f'Song: {self.title}'
 
     def save(self, *args: Any, **kwargs: Any) -> None:
-
         # TODO: сделать валидацию на аудио-файл
         super().save(*args, **kwargs)
 

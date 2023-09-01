@@ -34,6 +34,7 @@ def post_save_song(
         )
         instance.duration = mfile.info.length
         instance.save()
+
         to_emails: list[str] = [
             'nafobe6448@gienig.com'
         ]
@@ -46,11 +47,12 @@ def post_save_song(
             to_emails
         )
 
+
 @receiver(
     pre_save,
     sender=Song
 )
-def pre_save_anime(
+def pre_save_song(
     sender: ModelBase,
     instance: Song,
     **kwargs: dict

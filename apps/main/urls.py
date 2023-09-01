@@ -2,11 +2,15 @@
 from django.urls import path
 
 # Local
-from . import views
+from .views import (
+    DetailView,
+    IndexView,
+    create_song
+)
 
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('<int:album_id>/', views.detail, name='detail'),
-    path('song/<int:pk>/', views.song_detail, name='song_detail')
+    path('', IndexView.as_view(), name='index'),
+    path('<int:album_id>/', DetailView.as_view(), name='detail'),
+    path('<int:song_id>/', create_song, name='create_song')
 ]
