@@ -8,11 +8,20 @@ from django.contrib import admin
 from .models import (
     Album,
     Artist,
+    AudioFileType,
     Band,
     Country,
     Genre,
     Song
 )
+
+
+@admin.register(AudioFileType)
+class AudioFileTypeAdmin(admin.ModelAdmin):
+    """
+    AudioFileTypeAdmin admin.
+    """
+    readonly_fields = ()
 
 
 @admin.register(Country)
@@ -73,7 +82,8 @@ class AlbumAdmin(admin.ModelAdmin):
 class SongAdmin(admin.ModelAdmin):
     readonly_fields: tuple[str, ...] = (
         'duration',
-        'times_played'
+        'times_played',
+        'is_favorite'
     )
 
 

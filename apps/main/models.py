@@ -10,6 +10,23 @@ from abstracts.models import AbsctractDateTime
 from abstracts.utils import normalize_time
 
 
+class AudioFileType(models.Model):
+    """
+    Модель для хранения типов расширений аудио-файлов.
+    """
+    name: models.CharField = models.CharField(
+        verbose_name='название',
+        max_length=10
+    )
+
+    class Meta:
+        verbose_name = 'тип расширения аудио-файла'
+        verbose_name_plural = 'типы расширений аудио-файлов'
+
+    def __str__(self):
+        return f'Расширение: {self.name}'
+
+
 class Country(models.Model):
     title = models.CharField(
         verbose_name='название',
@@ -36,7 +53,8 @@ class Band(AbsctractDateTime):
     country = models.ForeignKey(
         to=Country,
         on_delete=models.PROTECT,
-        verbose_name='страна'
+        verbose_name='страна',
+        related_name='to_contry'
     )
 
     class Meta:
@@ -66,6 +84,7 @@ class Artist(AbsctractDateTime):
         to=Band,
         on_delete=models.PROTECT,
         verbose_name='группа',
+        related_name='to_band',
         null=True,
         blank=True
     )
@@ -116,7 +135,8 @@ class Album(models.Model):
     band = models.ForeignKey(
         to=Band,
         on_delete=models.PROTECT,
-        verbose_name='группа'
+        verbose_name='группа',
+        related_name='to_band'
     )
     title = models.CharField(
         verbose_name='название альбома',
@@ -173,8 +193,9 @@ class Song(models.Model):
     )
     album = models.ForeignKey(
         to=Album,
+        on_delete=models.CASCADE,
         verbose_name='альбом',
-        on_delete=models.CASCADE
+        related_name='songs'
     )
     audio_file = models.FileField(
         verbose_name='аудио файл',
@@ -197,6 +218,10 @@ class Song(models.Model):
         verbose_name='количество прослушиваний',
         null=True,
         blank=True
+    )
+    is_favorite = models.BooleanField(
+        verbose_name='избранное',
+        default=False
     )
 
     @property
